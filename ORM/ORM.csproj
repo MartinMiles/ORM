@@ -45,7 +45,7 @@
     <Compile Include="Logic\Configuration.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="Logic\ModelFieldAttribute.cs" />
-    <Compile Include="ModelTypedDatabase.cs" />
+    <Compile Include="TypedDatabase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Logic\Results\ProcedureIdentityResult.cs" />
     <Compile Include="Logic\Results\ProcedureResult.cs" />

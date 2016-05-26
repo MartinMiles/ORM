@@ -29,6 +29,19 @@ namespace ORM
             return StoredProcedure(procedureName, parameters, null);
         }
 
+        public static ProcedureResult StoredProcedure(string procedureName, Dictionary<string, dynamic> values, string outputParameterName = null)
+        {
+            var parameters = values.Select(i => new SqlParameter(i.Key, i.Value)).ToList();
+
+            if (!string.IsNullOrWhiteSpace(outputParameterName))
+            {
+                parameters.Add(new SqlParameter(outputParameterName, 0));
+                return StoredProcedure(procedureName, parameters, outputParameterName);                
+            }
+
+            return StoredProcedure(procedureName, parameters);
+        }
+       
         /// <summary>
         /// Executes stored procedure
         /// </summary>
@@ -51,6 +64,16 @@ namespace ORM
 
                 foreach (SqlParameter parameter in parameters)
                 {
+                    
+                    //    if (value.Value is string)
+                    //    {
+                    //        parameters.Add(new SqlParameter(value.Key, value.Value));
+                    //    }
+                    //    else if (value.Value is DataTable)
+                    //    {
+                    //        parameters.AddW(new SqlParameter(value.Key, value.Value));
+
+                    //    }
                     command.Parameters.Add(parameter);
                 }
 
@@ -121,6 +144,10 @@ namespace ORM
                                 if (!string.IsNullOrEmpty(returnFieldName) && ColumnExists(dr, returnFieldName))
                                 {
                                     id = Convert.ToInt32(dr[returnFieldName]);
+                                }
+                                else if(returnFieldName == null && dr.FieldCount > 0)
+                                {
+                                    id = Convert.ToInt32(dr[0]);
                                 }
                             }
                         }
